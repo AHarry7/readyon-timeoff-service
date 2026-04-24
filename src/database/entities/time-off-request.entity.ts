@@ -8,11 +8,11 @@ import {
   JoinColumn,
   BeforeInsert,
   BeforeUpdate,
-} from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
-import { RequestStatus } from '../common/enums';
-import { TimeOffBalance } from './time-off-balance.entity';
-import { OutboxEvent } from './outbox-event.entity';
+} from "typeorm";
+import { v4 as uuidv4 } from "uuid";
+import { RequestStatus } from "../../common/enums";
+import { TimeOffBalance } from "./time-off-balance.entity";
+import { OutboxEvent } from "./outbox-event.entity";
 
 /**
  * time_off_requests
@@ -31,19 +31,19 @@ import { OutboxEvent } from './outbox-event.entity';
  * on the balance relation; the migration script adds the DEFERRABLE clause
  * manually because TypeORM does not expose that option.
  */
-@Entity('time_off_requests')
-@Index('idx_tor_employee_status', ['employeeId', 'status'])
-@Index('idx_tor_idempotency', ['idempotencyKey'], { unique: true })
+@Entity("time_off_requests")
+@Index("idx_tor_employee_status", ["employeeId", "status"])
+@Index("idx_tor_idempotency", ["idempotencyKey"], { unique: true })
 export class TimeOffRequest {
-  @PrimaryColumn({ type: 'text' })
+  @PrimaryColumn({ type: "text" })
   id: string;
 
   // ── Dimension columns (also the FK join columns) ──────────────────────────
 
-  @Column({ name: 'employee_id', type: 'text', nullable: false })
+  @Column({ name: "employee_id", type: "text", nullable: false })
   employeeId: string;
 
-  @Column({ name: 'location_id', type: 'text', nullable: false })
+  @Column({ name: "location_id", type: "text", nullable: false })
   locationId: string;
 
   // ── Business columns ───────────────────────────────────────────────────────
@@ -52,7 +52,7 @@ export class TimeOffRequest {
    * Number of working days requested.
    * CHECK (days_requested > 0) is enforced by the migration DDL.
    */
-  @Column({ name: 'days_requested', type: 'real', nullable: false })
+  @Column({ name: "days_requested", type: "real", nullable: false })
   daysRequested: number;
 
   /**
@@ -60,14 +60,14 @@ export class TimeOffRequest {
    * Using string rather than Date avoids the timezone-shift pitfalls that
    * SQLite's date handling introduces when Node deserializes Date objects.
    */
-  @Column({ name: 'start_date', type: 'text', nullable: false })
+  @Column({ name: "start_date", type: "text", nullable: false })
   startDate: string;
 
-  @Column({ name: 'end_date', type: 'text', nullable: false })
+  @Column({ name: "end_date", type: "text", nullable: false })
   endDate: string;
 
   /** Free-form category: 'ANNUAL', 'SICK', 'UNPAID', etc. */
-  @Column({ name: 'leave_type', type: 'text', nullable: false })
+  @Column({ name: "leave_type", type: "text", nullable: false })
   leaveType: string;
 
   /**
@@ -76,8 +76,8 @@ export class TimeOffRequest {
    * the constraint is added by the migration script.
    */
   @Column({
-    name: 'status',
-    type: 'text',
+    name: "status",
+    type: "text",
     nullable: false,
     default: RequestStatus.PENDING,
     enum: RequestStatus,
@@ -85,14 +85,14 @@ export class TimeOffRequest {
   status: RequestStatus;
 
   /** The employeeId of the person submitting this request. */
-  @Column({ name: 'submitted_by', type: 'text', nullable: false })
+  @Column({ name: "submitted_by", type: "text", nullable: false })
   submittedBy: string;
 
   /** Populated when a manager approves or rejects. */
-  @Column({ name: 'reviewed_by', type: 'text', nullable: true })
+  @Column({ name: "reviewed_by", type: "text", nullable: true })
   reviewedBy: string | null;
 
-  @Column({ name: 'rejection_reason', type: 'text', nullable: true })
+  @Column({ name: "rejection_reason", type: "text", nullable: true })
   rejectionReason: string | null;
 
   /**
@@ -100,18 +100,18 @@ export class TimeOffRequest {
    * The UNIQUE constraint is enforced both here (@Index unique) and in the
    * migration DDL.
    */
-  @Column({ name: 'idempotency_key', type: 'text', nullable: false })
+  @Column({ name: "idempotency_key", type: "text", nullable: false })
   idempotencyKey: string;
 
   /**
    * Populated once the outbox worker receives a successful HCM confirmation.
    * This is HCM's own reference ID for the approved leave booking.
    */
-  @Column({ name: 'hcm_reference_id', type: 'text', nullable: true })
+  @Column({ name: "hcm_reference_id", type: "text", nullable: true })
   hcmReferenceId: string | null;
 
   /** Stores the raw HCM error detail when status transitions to HCM_FAILED. */
-  @Column({ name: 'hcm_error_message', type: 'text', nullable: true })
+  @Column({ name: "hcm_error_message", type: "text", nullable: true })
   hcmErrorMessage: string | null;
 
   /**
@@ -119,13 +119,13 @@ export class TimeOffRequest {
    * Used by reconciliation jobs to detect drift between what the employee saw
    * and what was later confirmed by HCM.
    */
-  @Column({ name: 'balance_snapshot', type: 'real', nullable: false })
+  @Column({ name: "balance_snapshot", type: "real", nullable: false })
   balanceSnapshot: number;
 
-  @Column({ name: 'created_at', type: 'datetime', nullable: false })
+  @Column({ name: "created_at", type: "datetime", nullable: false })
   createdAt: Date;
 
-  @Column({ name: 'updated_at', type: 'datetime', nullable: false })
+  @Column({ name: "updated_at", type: "datetime", nullable: false })
   updatedAt: Date;
 
   // ── Relations ──────────────────────────────────────────────────────────────
@@ -144,11 +144,11 @@ export class TimeOffRequest {
    */
   @ManyToOne(() => TimeOffBalance, (balance) => balance.requests, {
     nullable: false,
-    onDelete: 'RESTRICT',
+    onDelete: "RESTRICT",
   })
   @JoinColumn([
-    { name: 'employee_id', referencedColumnName: 'employeeId' },
-    { name: 'location_id', referencedColumnName: 'locationId' },
+    { name: "employee_id", referencedColumnName: "employeeId" },
+    { name: "location_id", referencedColumnName: "locationId" },
   ])
   balance: TimeOffBalance;
 

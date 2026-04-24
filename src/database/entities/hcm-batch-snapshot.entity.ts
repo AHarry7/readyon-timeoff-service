@@ -1,12 +1,6 @@
-import {
-  Entity,
-  PrimaryColumn,
-  Column,
-  Index,
-  BeforeInsert,
-} from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
-import { BatchSnapshotStatus } from '../common/enums';
+import { Entity, PrimaryColumn, Column, Index, BeforeInsert } from "typeorm";
+import { v4 as uuidv4 } from "uuid";
+import { BatchSnapshotStatus } from "../../common/enums";
 
 /**
  * hcm_batch_snapshots
@@ -26,20 +20,20 @@ import { BatchSnapshotStatus } from '../common/enums';
  * The BatchSyncWorker then reads RECEIVED rows, runs the merge algorithm,
  * and updates status to 'PROCESSED' or 'PARTIALLY_FAILED'.
  */
-@Entity('hcm_batch_snapshots')
+@Entity("hcm_batch_snapshots")
 export class HcmBatchSnapshot {
-  @PrimaryColumn({ type: 'text' })
+  @PrimaryColumn({ type: "text" })
   id: string;
 
   /**
    * The identifier assigned by HCM to this batch run.
    * Unique constraint guards against duplicate deliveries.
    */
-  @Column({ name: 'batch_id', type: 'text', nullable: false, unique: true })
+  @Column({ name: "batch_id", type: "text", nullable: false, unique: true })
   batchId: string;
 
   /** Timestamp at which ExampleHR received this batch payload. */
-  @Column({ name: 'received_at', type: 'datetime', nullable: false })
+  @Column({ name: "received_at", type: "datetime", nullable: false })
   receivedAt: Date;
 
   /**
@@ -47,12 +41,12 @@ export class HcmBatchSnapshot {
    * Schema: { batchId, generatedAt, records: [{ employeeId, locationId, balanceDays, leaveType }] }
    * Stored verbatim to ensure the raw source-of-truth is always recoverable.
    */
-  @Column({ name: 'payload', type: 'text', nullable: false })
+  @Column({ name: "payload", type: "text", nullable: false })
   payload: string;
 
   @Column({
-    name: 'status',
-    type: 'text',
+    name: "status",
+    type: "text",
     nullable: false,
     default: BatchSnapshotStatus.RECEIVED,
     enum: BatchSnapshotStatus,
@@ -63,7 +57,7 @@ export class HcmBatchSnapshot {
    * Populated by the BatchSyncWorker once all records have been processed.
    * Null while status is RECEIVED (processing not yet started).
    */
-  @Column({ name: 'processed_at', type: 'datetime', nullable: true })
+  @Column({ name: "processed_at", type: "datetime", nullable: true })
   processedAt: Date | null;
 
   /**
@@ -71,7 +65,7 @@ export class HcmBatchSnapshot {
    * Contains a JSON-serialised summary of which (employeeId, locationId)
    * records failed and why, for ops / reconciliation use.
    */
-  @Column({ name: 'error_notes', type: 'text', nullable: true })
+  @Column({ name: "error_notes", type: "text", nullable: true })
   errorNotes: string | null;
 
   // ── Lifecycle Hooks ────────────────────────────────────────────────────────

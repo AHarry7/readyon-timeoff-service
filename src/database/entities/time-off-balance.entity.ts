@@ -9,10 +9,10 @@ import {
   BeforeInsert,
   BeforeUpdate,
   CreateDateColumn,
-} from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
-import { SyncSource } from '../common/enums';
-import { TimeOffRequest } from './time-off-request.entity';
+} from "typeorm";
+import { v4 as uuidv4 } from "uuid";
+import { SyncSource } from "../../common/enums";
+import { TimeOffRequest } from "./time-off-request.entity";
 
 /**
  * time_off_balances
@@ -27,9 +27,9 @@ import { TimeOffRequest } from './time-off-request.entity';
  * Any concurrent UPDATE must supply the current version; a mismatch throws
  * OptimisticLockVersionMismatchError, which the service layer catches and retries.
  */
-@Entity('time_off_balances')
-@Unique('uq_tob_employee_location', ['employeeId', 'locationId'])
-@Index('idx_tob_employee', ['employeeId'])
+@Entity("time_off_balances")
+@Unique("uq_tob_employee_location", ["employeeId", "locationId"])
+@Index("idx_tob_employee", ["employeeId"])
 export class TimeOffBalance {
   /**
    * Primary key.
@@ -37,13 +37,13 @@ export class TimeOffBalance {
    * lower(hex(randomblob(16))) default, so TypeORM always has the ID available
    * in memory immediately after save() without an extra SELECT.
    */
-  @PrimaryColumn({ type: 'text' })
+  @PrimaryColumn({ type: "text" })
   id: string;
 
-  @Column({ name: 'employee_id', type: 'text', nullable: false })
+  @Column({ name: "employee_id", type: "text", nullable: false })
   employeeId: string;
 
-  @Column({ name: 'location_id', type: 'text', nullable: false })
+  @Column({ name: "location_id", type: "text", nullable: false })
   locationId: string;
 
   /**
@@ -52,14 +52,14 @@ export class TimeOffBalance {
    * This value is NEVER reduced by local reservations — it is the raw HCM figure.
    * All effective-balance arithmetic is done at query time.
    */
-  @Column({ name: 'hcm_balance', type: 'real', nullable: false, default: 0 })
+  @Column({ name: "hcm_balance", type: "real", nullable: false, default: 0 })
   hcmBalance: number;
 
   /**
    * ISO 8601 UTC timestamp of the last successful HCM sync for this record.
    * Used to surface staleness warnings to the UI (e.g. last synced > 24h ago).
    */
-  @Column({ name: 'last_synced_at', type: 'datetime', nullable: false })
+  @Column({ name: "last_synced_at", type: "datetime", nullable: false })
   lastSyncedAt: Date;
 
   /**
@@ -67,8 +67,8 @@ export class TimeOffBalance {
    * Maps to the SQL CHECK constraint: 'REALTIME' | 'BATCH' | 'MANUAL'
    */
   @Column({
-    name: 'sync_source',
-    type: 'text',
+    name: "sync_source",
+    type: "text",
     nullable: false,
     enum: SyncSource,
   })
@@ -81,19 +81,19 @@ export class TimeOffBalance {
    *
    * Maps to: version INTEGER NOT NULL DEFAULT 1
    */
-  @VersionColumn({ name: 'version', default: 1 })
+  @VersionColumn({ name: "version", default: 1 })
   version: number;
 
   @Column({
-    name: 'created_at',
-    type: 'datetime',
+    name: "created_at",
+    type: "datetime",
     nullable: false,
   })
   createdAt: Date;
 
   @Column({
-    name: 'updated_at',
-    type: 'datetime',
+    name: "updated_at",
+    type: "datetime",
     nullable: false,
   })
   updatedAt: Date;

@@ -7,10 +7,10 @@ import {
   JoinColumn,
   BeforeInsert,
   BeforeUpdate,
-} from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
-import { OutboxEventType, OutboxStatus } from '../common/enums';
-import { TimeOffRequest } from './time-off-request.entity';
+} from "typeorm";
+import { v4 as uuidv4 } from "uuid";
+import { OutboxEventType, OutboxStatus } from "../../common/enums";
+import { TimeOffRequest } from "./time-off-request.entity";
 
 /**
  * outbox_events
@@ -39,10 +39,10 @@ import { TimeOffRequest } from './time-off-request.entity';
  *  This prevents double-deduction if the worker retries after a network
  *  timeout where HCM already applied the deduction but the response was lost.
  */
-@Entity('outbox_events')
-@Index('idx_oe_status_next', ['status', 'nextAttemptAt'])
+@Entity("outbox_events")
+@Index("idx_oe_status_next", ["status", "nextAttemptAt"])
 export class OutboxEvent {
-  @PrimaryColumn({ type: 'text' })
+  @PrimaryColumn({ type: "text" })
   id: string;
 
   /**
@@ -51,7 +51,7 @@ export class OutboxEvent {
    * Cancellation of a FINALIZED request creates a second event (COMPENSATING_CREDIT)
    * after the original APPLY event is PROCESSED.
    */
-  @Column({ name: 'request_id', type: 'text', nullable: false })
+  @Column({ name: "request_id", type: "text", nullable: false })
   requestId: string;
 
   /**
@@ -61,8 +61,8 @@ export class OutboxEvent {
    *   COMPENSATING_CREDIT → POST /api/timeoff/reverse (post-HCM cancellation)
    */
   @Column({
-    name: 'event_type',
-    type: 'text',
+    name: "event_type",
+    type: "text",
     nullable: false,
     enum: OutboxEventType,
   })
@@ -75,19 +75,24 @@ export class OutboxEvent {
    * Schema: { employeeId, locationId, daysRequested, leaveType,
    *           startDate, endDate, referenceId }
    */
-  @Column({ name: 'payload', type: 'text', nullable: false })
+  @Column({ name: "payload", type: "text", nullable: false })
   payload: string;
 
   /**
    * Forwarded as the Idempotency-Key HTTP header on every HCM call.
    * Unique constraint ensures no two outbox events share a key.
    */
-  @Column({ name: 'idempotency_key', type: 'text', nullable: false, unique: true })
+  @Column({
+    name: "idempotency_key",
+    type: "text",
+    nullable: false,
+    unique: true,
+  })
   idempotencyKey: string;
 
   @Column({
-    name: 'status',
-    type: 'text',
+    name: "status",
+    type: "text",
     nullable: false,
     default: OutboxStatus.PENDING,
     enum: OutboxStatus,
@@ -95,7 +100,12 @@ export class OutboxEvent {
   status: OutboxStatus;
 
   /** Number of HCM call attempts made so far (0 = never attempted). */
-  @Column({ name: 'attempt_count', type: 'integer', nullable: false, default: 0 })
+  @Column({
+    name: "attempt_count",
+    type: "integer",
+    nullable: false,
+    default: 0,
+  })
   attemptCount: number;
 
   /**
@@ -103,11 +113,16 @@ export class OutboxEvent {
    * Defaults to 5 (1 initial + 4 retries = backoff up to ~16 minutes).
    * Configurable per event type if certain operations warrant more patience.
    */
-  @Column({ name: 'max_attempts', type: 'integer', nullable: false, default: 5 })
+  @Column({
+    name: "max_attempts",
+    type: "integer",
+    nullable: false,
+    default: 5,
+  })
   maxAttempts: number;
 
   /** Timestamp of the most recent HCM call attempt. Null = never attempted. */
-  @Column({ name: 'last_attempted_at', type: 'datetime', nullable: true })
+  @Column({ name: "last_attempted_at", type: "datetime", nullable: true })
   lastAttemptedAt: Date | null;
 
   /**
@@ -119,29 +134,29 @@ export class OutboxEvent {
    *   const delayMinutes = Math.min(2 ** attemptCount, 30);
    *   nextAttemptAt = new Date(Date.now() + delayMinutes * 60_000);
    */
-  @Column({ name: 'next_attempt_at', type: 'datetime', nullable: false })
+  @Column({ name: "next_attempt_at", type: "datetime", nullable: false })
   nextAttemptAt: Date;
 
   /**
    * Raw HCM response body stored for every attempt (overwritten each time).
    * Invaluable for post-incident debugging without needing to replay the call.
    */
-  @Column({ name: 'hcm_response', type: 'text', nullable: true })
+  @Column({ name: "hcm_response", type: "text", nullable: true })
   hcmResponse: string | null;
 
-  @Column({ name: 'created_at', type: 'datetime', nullable: false })
+  @Column({ name: "created_at", type: "datetime", nullable: false })
   createdAt: Date;
 
-  @Column({ name: 'updated_at', type: 'datetime', nullable: false })
+  @Column({ name: "updated_at", type: "datetime", nullable: false })
   updatedAt: Date;
 
   // ── Relations ──────────────────────────────────────────────────────────────
 
   @OneToOne(() => TimeOffRequest, (request) => request.outboxEvent, {
     nullable: false,
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE",
   })
-  @JoinColumn({ name: 'request_id' })
+  @JoinColumn({ name: "request_id" })
   request: TimeOffRequest;
 
   // ── Lifecycle Hooks ────────────────────────────────────────────────────────
@@ -175,7 +190,10 @@ export class OutboxEvent {
    */
   computeNextAttemptAt(currentAttemptCount: number): Date {
     const CAP_MINUTES = 30;
-    const delayMinutes = Math.min(Math.pow(2, currentAttemptCount), CAP_MINUTES);
+    const delayMinutes = Math.min(
+      Math.pow(2, currentAttemptCount),
+      CAP_MINUTES,
+    );
     return new Date(Date.now() + delayMinutes * 60_000);
   }
 }
