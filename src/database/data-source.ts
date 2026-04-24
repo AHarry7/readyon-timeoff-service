@@ -21,15 +21,15 @@
  * Defaults to 'timeoff.db' in the project root for local development.
  */
 
-import 'dotenv/config';
-import { DataSource } from 'typeorm';
-import { buildDataSourceOptions } from './database.module';
+import "dotenv/config";
+import { DataSource } from "typeorm";
+import { buildDataSourceOptions } from "./database.module";
 
-const dbPath = process.env.DATABASE_PATH ?? 'timeoff.db';
+const dbPath = process.env.DATABASE_PATH ?? "timeoff.db";
 
 export const AppDataSource = new DataSource({
   ...buildDataSourceOptions(dbPath),
   // Point the CLI at the TS source files, not the compiled JS.
-  entities: ['src/entities/*.entity.ts'],
-  migrations: ['src/database/migrations/*.ts'],
+  entities: ["src/database/entities/*.entity.ts"],
+  migrations: ["src/database/migrations/*.ts"],
 });
