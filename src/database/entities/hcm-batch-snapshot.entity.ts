@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, Column, Index, BeforeInsert } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
-import { BatchSnapshotStatus } from "src/common/enums";
+import { BatchSnapshotStatus } from "../../common/enums";
 
 /**
  * hcm_batch_snapshots

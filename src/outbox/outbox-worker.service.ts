@@ -13,7 +13,8 @@ import {
   OutboxEventType,
   RequestStatus,
   LedgerEventType,
-} from "src/common/enums";
+} from "../common/enums";
+
 import { HcmClientService } from "../hcm-client/hcm-client.service";
 import { BalancesService } from "../modules/balances/balances.service";
 import {

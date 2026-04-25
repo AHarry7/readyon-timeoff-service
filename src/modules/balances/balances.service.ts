@@ -4,7 +4,7 @@ import { InjectDataSource } from "@nestjs/typeorm";
 import { Repository, DataSource, EntityManager } from "typeorm";
 
 import { HcmClientService } from "../../hcm-client/hcm-client.service";
-import { SyncSource, LedgerEventType, RequestStatus } from "src/common/enums";
+import { SyncSource, LedgerEventType, RequestStatus } from "../../common/enums";
 import { EffectiveBalanceDto } from "./effective-balance.dto";
 import {
   BalanceLedger,

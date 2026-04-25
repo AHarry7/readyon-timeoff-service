@@ -11,7 +11,7 @@ import {
   CreateDateColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
-import { SyncSource } from "src/common/enums";
+import { SyncSource } from "../../common/enums";
 import { TimeOffRequest } from "./time-off-request.entity";
 
 /**

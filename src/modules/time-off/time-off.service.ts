@@ -15,7 +15,7 @@ import {
   LedgerEventType,
   OutboxEventType,
   OutboxStatus,
-} from "src/common/enums";
+} from "../../common/enums";
 
 import { BalancesService } from "../../modules/balances/balances.service";
 import {
