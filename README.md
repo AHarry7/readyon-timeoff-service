@@ -36,8 +36,11 @@ The mock server will run on http://localhost:4001
 
 Open a split terminal (leave the mock server running) and start the main app from the project root.
 
+Because this project uses strict production settings (`synchronize: false`), you must run the database migrations to generate the SQLite tables before starting the server.
+
 ```bash
 npm install
+npx typeorm-ts-node-commonjs migration:run -d src/database/data-source.ts
 npm run start:dev
 
 The main service will run on http://localhost:3000
