@@ -1,3 +1,4 @@
+import { DataSource } from "typeorm";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import {
@@ -7,20 +8,19 @@ import {
   BadRequestException,
 } from "@nestjs/common";
 
-import { TimeOffService } from "../../modules/time-off/time-off.service";
-import { BalancesService } from "src/modules/balances/balances.service";
 import {
   RequestStatus,
   OutboxEventType,
   OutboxStatus,
   LedgerEventType,
 } from "../../common/enums";
+
 import {
   SubmitRequestDto,
   ApproveRequestDto,
   RejectRequestDto,
   CancelRequestDto,
-} from "src/modules/time-off/dto/time-off-request.dto";
+} from "../../modules/time-off/dto/time-off-request.dto";
 
 import {
   makeBalance,
@@ -29,14 +29,17 @@ import {
   makeMockDataSource,
   makeQueryBuilderStub,
   MockEntityManager,
-} from "src/test-helpers";
+} from "../../test-helpers";
 
 import {
   TimeOffRequest,
   BalanceLedger,
   OutboxEvent,
   TimeOffBalance,
-} from "src/database/entities";
+} from "../../database/entities";
+
+import { TimeOffService } from "./time-off.service";
+import { BalancesService } from "../balances/balances.service";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Constants & fixtures
@@ -122,7 +125,7 @@ describe("TimeOffService", () => {
           useValue: makeRepoMock(),
         },
         { provide: getRepositoryToken(OutboxEvent), useValue: makeRepoMock() },
-        { provide: "DataSource", useValue: dataSource },
+        { provide: DataSource, useValue: dataSource },
         { provide: BalancesService, useValue: balancesService },
       ],
     }).compile();

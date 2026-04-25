@@ -1,8 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { NotFoundException } from "@nestjs/common";
-
-import { BalancesService } from "src/modules/balances/balances.service";
+import { DataSource } from "typeorm";
 import { HcmClientService } from "../../hcm-client/hcm-client.service";
 import { SyncSource, RequestStatus, LedgerEventType } from "../../common/enums";
 
@@ -12,13 +11,14 @@ import {
   makeMockDataSource,
   makeQueryBuilderStub,
   MockEntityManager,
-} from "src/test-helpers";
+} from "../../test-helpers";
 
 import {
   TimeOffBalance,
   BalanceLedger,
   TimeOffRequest,
-} from "src/database/entities";
+} from "../../database/entities";
+import { BalancesService } from "./balances.service";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mock factory helpers
@@ -63,7 +63,7 @@ describe("BalancesService", () => {
     requestRepo = makeRepositoryMock();
     ledgerRepo = makeRepositoryMock();
     txManager = makeMockEntityManager();
-
+    (txManager as any).createQueryBuilder = requestRepo.createQueryBuilder;
     const dataSource = makeMockDataSource(txManager);
 
     const module: TestingModule = await Test.createTestingModule({
@@ -72,7 +72,7 @@ describe("BalancesService", () => {
         { provide: getRepositoryToken(TimeOffBalance), useValue: balanceRepo },
         { provide: getRepositoryToken(TimeOffRequest), useValue: requestRepo },
         { provide: getRepositoryToken(BalanceLedger), useValue: ledgerRepo },
-        { provide: "DataSource", useValue: dataSource },
+        { provide: DataSource, useValue: dataSource },
         { provide: HcmClientService, useValue: hcmClient },
       ],
     }).compile();
@@ -295,6 +295,7 @@ describe("BalancesService", () => {
           employeeId: EMP,
           locationId: LOC,
           hcmBalance: 10,
+          lastSyncedAt: new Date(),
         });
         txManager.save.mockImplementation((_, e) => Promise.resolve(e));
 
