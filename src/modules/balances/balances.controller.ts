@@ -36,7 +36,7 @@ import { EffectiveBalanceDto } from "./effective-balance.dto";
  * This controller does not implement auth — it trusts that :employeeId and
  * :locationId have been validated before the request reaches here.
  */
-@Controller("api/v1/balances")
+@Controller("balances")
 export class BalancesController {
   private readonly logger = new Logger(BalancesController.name);
 

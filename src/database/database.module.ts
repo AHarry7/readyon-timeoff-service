@@ -1,16 +1,15 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { DataSource, DataSourceOptions } from 'typeorm';
-
+import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { DataSource, DataSourceOptions } from "typeorm";
 import {
-  TimeOffBalance,
-  TimeOffRequest,
   BalanceLedger,
-  OutboxEvent,
   HcmBatchSnapshot,
   IdempotencyKey,
-} from '../entities';
+  OutboxEvent,
+  TimeOffBalance,
+  TimeOffRequest,
+} from "./entities";
 
 /**
  * Builds the TypeORM DataSource options from environment config.
@@ -20,7 +19,7 @@ import {
  */
 export function buildDataSourceOptions(dbPath: string): DataSourceOptions {
   return {
-    type: 'better-sqlite3',
+    type: "better-sqlite3",
     database: dbPath,
 
     /**
@@ -43,8 +42,8 @@ export function buildDataSourceOptions(dbPath: string): DataSourceOptions {
      * in any environment because it can silently drop columns on schema
      * changes.
      */
-    migrations: ['dist/database/migrations/*.js'],
-    migrationsTableName: 'typeorm_migrations',
+    migrations: ["dist/database/migrations/*.js"],
+    migrationsTableName: "typeorm_migrations",
 
     /**
      * synchronize: false — always. Schema changes go through migrations.
@@ -59,9 +58,10 @@ export function buildDataSourceOptions(dbPath: string): DataSourceOptions {
      * Full query logging is only enabled when LOG_SQL=true to avoid
      * leaking PII into production logs.
      */
-    logging: process.env.LOG_SQL === 'true'
-      ? ['query', 'error', 'warn', 'schema']
-      : ['error', 'warn', 'schema'],
+    logging:
+      process.env.LOG_SQL === "true"
+        ? ["query", "error", "warn", "schema"]
+        : ["error", "warn", "schema"],
 
     /**
      * better-sqlite3 connection hook.
@@ -84,9 +84,9 @@ export function buildDataSourceOptions(dbPath: string): DataSourceOptions {
      *   when the outbox worker and an API request write concurrently.
      */
     prepareDatabase: (db) => {
-      db.pragma('foreign_keys = ON');
-      db.pragma('journal_mode = WAL');
-      db.pragma('busy_timeout = 5000');
+      db.pragma("foreign_keys = ON");
+      db.pragma("journal_mode = WAL");
+      db.pragma("busy_timeout = 5000");
     },
   };
 }
@@ -110,7 +110,7 @@ export function buildDataSourceOptions(dbPath: string): DataSourceOptions {
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
-        const dbPath = config.get<string>('DATABASE_PATH', 'timeoff.db');
+        const dbPath = config.get<string>("DATABASE_PATH", "timeoff.db");
         return buildDataSourceOptions(dbPath);
       },
       /**
