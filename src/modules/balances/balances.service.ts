@@ -3,12 +3,14 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { InjectDataSource } from "@nestjs/typeorm";
 import { Repository, DataSource, EntityManager } from "typeorm";
 
-import { TimeOffBalance } from "../../database/entities/time-off-balance.entity";
-import { TimeOffRequest } from "../../database/entities/time-off-request.entity";
-import { BalanceLedger } from "../../database/entities/balance-ledger.entity";
 import { HcmClientService } from "../../hcm-client/hcm-client.service";
-import { SyncSource, LedgerEventType, RequestStatus } from "../../common/enums";
+import { SyncSource, LedgerEventType, RequestStatus } from "src/common/enums";
 import { EffectiveBalanceDto } from "./effective-balance.dto";
+import {
+  BalanceLedger,
+  TimeOffBalance,
+  TimeOffRequest,
+} from "src/database/entities";
 
 /** Statuses that represent a "live" reservation against the employee's balance. */
 const ACTIVE_RESERVATION_STATUSES: RequestStatus[] = [

@@ -1,11 +1,13 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { TimeOffRequest } from "../../database/entities/time-off-request.entity";
-import { TimeOffBalance } from "../../database/entities/time-off-balance.entity";
-import { BalanceLedger } from "../../database/entities/balance-ledger.entity";
-import { OutboxEvent } from "../../database/entities/outbox-event.entity";
-import { IdempotencyKey } from "../../database/entities/idempotency-key.entity";
+import {
+  TimeOffRequest,
+  TimeOffBalance,
+  BalanceLedger,
+  OutboxEvent,
+  IdempotencyKey,
+} from "src/database/entities";
 
 import { BalancesModule } from "../../modules/balances/balances.module";
 import { TimeOffService } from "./time-off.service";

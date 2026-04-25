@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { OutboxEvent } from "../database/entities/outbox-event.entity";
-import { TimeOffRequest } from "../database/entities/time-off-request.entity";
-import { TimeOffBalance } from "../database/entities/time-off-balance.entity";
-import { BalanceLedger } from "../database/entities/balance-ledger.entity";
-import { IdempotencyKey } from "../database/entities/idempotency-key.entity";
+import { OutboxEvent } from "src/database/entities/";
+import { TimeOffRequest } from "src/database/entities";
+import { TimeOffBalance } from "src/database/entities";
+import { BalanceLedger } from "src/database/entities";
+import { IdempotencyKey } from "src/database/entities";
 
 import { HcmClientModule } from "../hcm-client/hcm-client.module";
 import { BalancesModule } from "../modules/balances/balances.module";

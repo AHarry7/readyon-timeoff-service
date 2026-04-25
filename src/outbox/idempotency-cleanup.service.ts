@@ -2,7 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, LessThan } from "typeorm";
 import { Cron, CronExpression } from "@nestjs/schedule";
-import { IdempotencyKey } from "../database/entities/idempotency-key.entity";
+import { IdempotencyKey } from "src/database/entities";
 
 /**
  * IdempotencyCleanupService

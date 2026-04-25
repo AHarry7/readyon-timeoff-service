@@ -10,7 +10,7 @@ import {
   BeforeUpdate,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
-import { RequestStatus } from "../../common/enums";
+import { RequestStatus } from "src/common/enums";
 import { TimeOffBalance } from "./time-off-balance.entity";
 import { OutboxEvent } from "./outbox-event.entity";
 

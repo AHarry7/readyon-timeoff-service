@@ -12,7 +12,7 @@ import { Repository, LessThan } from "typeorm";
 import { Observable, of } from "rxjs";
 import { tap } from "rxjs/operators";
 import { Request, Response } from "express";
-import { IdempotencyKey } from "../../database/entities/idempotency-key.entity";
+import { IdempotencyKey } from "src/database/entities";
 
 /**
  * HTTP methods that require an Idempotency-Key header.

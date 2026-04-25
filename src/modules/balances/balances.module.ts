@@ -1,10 +1,11 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { TimeOffBalance } from "../../database/entities/time-off-balance.entity";
-import { TimeOffRequest } from "../../database/entities/time-off-request.entity";
-import { BalanceLedger } from "../../database/entities/balance-ledger.entity";
-
+import {
+  BalanceLedger,
+  TimeOffBalance,
+  TimeOffRequest,
+} from "src/database/entities";
 import { HcmClientModule } from "../../hcm-client/hcm-client.module";
 import { BalancesService } from "./balances.service";
 import { BalancesController } from "./balances.controller";

@@ -10,16 +10,13 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { InjectDataSource } from "@nestjs/typeorm";
 import { Repository, DataSource, EntityManager } from "typeorm";
 
-import { TimeOffRequest } from "../../database/entities/time-off-request.entity";
-import { TimeOffBalance } from "../../database/entities/time-off-balance.entity";
-import { BalanceLedger } from "../../database/entities/balance-ledger.entity";
-import { OutboxEvent } from "../../database/entities/outbox-event.entity";
 import {
   RequestStatus,
   LedgerEventType,
   OutboxEventType,
   OutboxStatus,
-} from "../../common/enums";
+} from "src/common/enums";
+
 import { BalancesService } from "../../modules/balances/balances.service";
 import {
   SubmitRequestDto,
@@ -27,6 +24,12 @@ import {
   RejectRequestDto,
   CancelRequestDto,
 } from "./dto/time-off-request.dto";
+import {
+  BalanceLedger,
+  OutboxEvent,
+  TimeOffBalance,
+  TimeOffRequest,
+} from "src/database/entities";
 
 /** Statuses whose days count as active reservations against the balance. */
 const ACTIVE_RESERVATION_STATUSES: RequestStatus[] = [

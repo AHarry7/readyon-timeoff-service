@@ -4,16 +4,16 @@ import { InjectDataSource } from "@nestjs/typeorm";
 import { Repository, DataSource, LessThanOrEqual } from "typeorm";
 import { Cron, CronExpression } from "@nestjs/schedule";
 
-import { OutboxEvent } from "../database/entities/outbox-event.entity";
-import { TimeOffRequest } from "../database/entities/time-off-request.entity";
-import { TimeOffBalance } from "../database/entities/time-off-balance.entity";
-import { BalanceLedger } from "../database/entities/balance-ledger.entity";
+import { OutboxEvent } from "src/database/entities";
+import { TimeOffRequest } from "src/database/entities";
+import { TimeOffBalance } from "src/database/entities";
+import { BalanceLedger } from "src/database/entities";
 import {
   OutboxStatus,
   OutboxEventType,
   RequestStatus,
   LedgerEventType,
-} from "../common/enums";
+} from "src/common/enums";
 import { HcmClientService } from "../hcm-client/hcm-client.service";
 import { BalancesService } from "../modules/balances/balances.service";
 import {

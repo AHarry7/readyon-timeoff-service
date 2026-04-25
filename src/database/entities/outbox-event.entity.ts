@@ -9,7 +9,7 @@ import {
   BeforeUpdate,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
-import { OutboxEventType, OutboxStatus } from "../../common/enums";
+import { OutboxEventType, OutboxStatus } from "src/common/enums";
 import { TimeOffRequest } from "./time-off-request.entity";
 
 /**
