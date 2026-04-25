@@ -2,12 +2,12 @@ import { Module } from "@nestjs/common";
 import { APP_INTERCEPTOR } from "@nestjs/core";
 import { ConfigModule } from "@nestjs/config";
 
-import { DatabaseModule } from "./src/database/database.module";
-import { HcmClientModule } from "./src/hcm-client/hcm-client.module";
-import { BalancesModule } from "./src/modules/balances/balances.module";
-import { TimeOffModule } from "./src/modules/time-off/time-off.module";
+import { DatabaseModule } from "./database/database.module";
+import { HcmClientModule } from "./hcm-client/hcm-client.module";
+import { BalancesModule } from "./modules/balances/balances.module";
+import { TimeOffModule } from "./modules/time-off/time-off.module";
 
-import { IdempotencyInterceptor } from "./src/common/interceptors/idempotency.interceptor";
+import { IdempotencyInterceptor } from "./common/interceptors/idempotency.interceptor";
 
 /**
  * AppModule — root module.
