@@ -1,21 +1,37 @@
 {
+  "name": "readyon-timeoff-service",
+  "version": "1.0.0",
+  "description": "ReadyOn Time-Off Microservice",
+  "scripts": {
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch"
+  },
   "dependencies": {
     "@nestjs/axios": "^4.0.1",
+    "@nestjs/common": "^11.0.0",
     "@nestjs/config": "^4.0.4",
+    "@nestjs/core": "^11.0.0",
+    "@nestjs/platform-express": "^11.0.0",
     "@nestjs/schedule": "^6.1.3",
     "@nestjs/typeorm": "^11.0.1",
     "axios": "^1.15.2",
     "better-sqlite3": "^12.9.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
+    "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.2",
     "typeorm": "^0.3.28",
     "uuid": "^14.0.0"
   },
   "devDependencies": {
+    "@nestjs/cli": "^11.0.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/cron": "^2.4.3",
     "@types/express": "^5.0.6",
-    "@types/uuid": "^11.0.0"
+    "@types/node": "^22.0.0",
+    "@types/uuid": "^11.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0"
   }
 }
