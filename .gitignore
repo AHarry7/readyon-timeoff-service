@@ -26,6 +26,9 @@ pnpm-debug.log*
 *.sqlite3
 tmp/
 temp/
+*.db
+*.db-shm
+*.db-wal
 
 # IDE/editor
 .idea/
