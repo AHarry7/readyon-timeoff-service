@@ -9,11 +9,14 @@ import { BalancesModule } from "./modules/balances/balances.module";
 import { TimeOffModule } from "./modules/time-off/time-off.module";
 import { OutboxModule } from "./outbox/outbox.module";
 import { IdempotencyInterceptor } from "./common/interceptors/idempotency.interceptor";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { IdempotencyKey } from "./database/entities";
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     ScheduleModule.forRoot(), // <-- Added this so @Cron() works!
+    TypeOrmModule.forFeature([IdempotencyKey]),
     DatabaseModule,
     HcmClientModule,
     BalancesModule,
